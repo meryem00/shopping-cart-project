@@ -1,45 +1,115 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const cart = [];
-    const cartCount = document.getElementById("cart-count");
-    const cartSidebar = document.getElementById("cart-sidebar");
-    const cartItems = document.getElementById("cart-items");
-    const cartTotal = document.getElementById("cart-total");
-    const cartBtn = document.getElementById("cart-btn");
-    const closeCart = document.getElementById("close-cart");
-
-    document.querySelectorAll(".add-to-cart").forEach(button => {
-        button.addEventListener("click", () => {
-            const name = button.getAttribute("data-name");
-            const price = parseFloat(button.getAttribute("data-price"));
-            
-            const existingItem = cart.find(item => item.name === name);
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({ name, price, quantity: 1 });
-            }
-            updateCart();
-        });
-    });
-
-    cartBtn.addEventListener("click", () => {
-        cartSidebar.classList.toggle("hidden");
-    });
-
-    closeCart.addEventListener("click", () => {
-        cartSidebar.classList.add("hidden");
-    });
-
-    function updateCart() {
-        cartItems.innerHTML = "";
-        let total = 0;
-        cart.forEach(item => {
-            total += item.price * item.quantity;
-            const li = document.createElement("li");
-            li.textContent = `${item.name} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`;
-            cartItems.appendChild(li);
-        });
-        cartTotal.textContent = total.toFixed(2);
-        cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+// Sample product data
+const products = [
+    {
+      id: 1,
+      name: "Wireless Headphones",
+      price: 59.99,
+      image: "Images/wirelessheadphone.jpg",
+      description: "Noise-cancelling wireless headphones with long battery life."
+    },
+    {
+      id: 2,
+      name: "Smart Watch",
+      price: 99.99,
+      image: "Images/smartwatch.jpg",
+      description: "Stylish and easy to wear smart watch with health tracking features."
+    },
+    {
+      id: 3,
+      name: "Bluetooth Speaker",
+      price: 39.99,
+      image: "Images/bluetoothspeaker.jpg",
+      description: "Portable and Stylish Bluetooth speaker with high-quality sound."
     }
-});
+  ];
+  
+  // Shopping cart state
+  let cart = [];
+  
+  // DOM elements
+  const productList = document.getElementById("productList");
+  const cartItems = document.getElementById("cartItems");
+  const cartTotal = document.getElementById("cartTotal");
+  const cartCount = document.getElementById("cartCount");
+  const cartToggle = document.getElementById("cartToggle");
+  const cartPanel = document.getElementById("cart");
+  const searchBar = document.getElementById("searchBar");
+  
+  // Render products on page
+  function displayProducts(productArray) {
+    productList.innerHTML = ""; // Clear previous products
+    productArray.forEach(product => {
+      const productCard = document.createElement("div");
+      productCard.className = "product";
+      productCard.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>${product.description}</p>
+        <strong>$${product.price.toFixed(2)}</strong>
+        <button onclick="addToCart(${product.id})">Add to Cart</button>
+      `;
+      productList.appendChild(productCard);
+    });
+  }
+  
+  // Add product to cart
+  function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    cart.push(product);
+    updateCart();
+  }
+  
+  // Remove item from cart
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCart();
+  }
+  
+  // Update cart display and total
+  function updateCart() {
+    cartItems.innerHTML = "";
+    let total = 0;
+  
+    cart.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${item.name} - $${item.price.toFixed(2)}
+        <button onclick="removeFromCart(${index})">Remove</button>
+      `;
+      cartItems.appendChild(li);
+      total += item.price;
+    });
+  
+    cartTotal.textContent = total.toFixed(2);
+    cartCount.textContent = cart.length;
+  }
+  
+  // Toggle cart visibility
+  cartToggle.addEventListener("click", () => {
+    cartPanel.classList.toggle("open");
+  });
+  
+  // Handle live search
+  searchBar.addEventListener("input", () => {
+    const searchText = searchBar.value.toLowerCase();
+    const filtered = products.filter(p => 
+      p.name.toLowerCase().includes(searchText)
+    );
+    displayProducts(filtered);
+  });
+  
+  // Handle checkout button
+  document.getElementById("checkoutBtn").addEventListener("click", () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+    } else {
+      alert("Checked out! will proceed to payment shortly!");
+      cart = [];
+      updateCart();
+      cartPanel.classList.remove("open");
+    }
+  });
+  
+  // Initialize
+  displayProducts(products);
+  
