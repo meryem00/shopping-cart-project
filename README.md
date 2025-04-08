@@ -1,5 +1,5 @@
 # shopping-cart-project
-# 🛒 Responsive E-Commerce App
+# 🛒 Responsive E-Commerce App (Front-end only)
 
 This is a simple responsive web-based e-commerce platform developed as part of the Azubi Productivity Program Software Development Baseline Assessment. It offers a user-friendly experience where customers can browse, view, and manage products in a shopping cart.
 
@@ -15,6 +15,12 @@ This is a simple responsive web-based e-commerce platform developed as part of t
 
 - **Search Bar**: Filter products by name or category.
 - **Checkout Simulation**: Optional checkout form with basic validation for demonstration.
+
+## 🛠 Technologies Used
+
+- **HTML5**
+- **CSS3**
+- **JavaScript (Vanilla JS)**
 
 ## 🚀 Deployment Details
 
@@ -53,9 +59,20 @@ ecommerce-app/
     └── bluetoothspeaker.jpg
 ```
 
-## 🧠 Reflection
+## 🧠 What I Learned
+This project helped me put into practice:
+- Responsive web design principles
+- DOM manipulation with JavaScript
+- Basic state management using arrays/objects
+- Accessibility standards (ARIA, keyboard navigation)
+- Clean project structure with separation of concerns (HTML/CSS/JS)
+- Hosting with Azure
 
-This project demonstrates my capability to develop a structured, scalable, and accessible web application. It highlights my hands-on learning in JavaScript, CSS, and HTML, as well as hosting with Azure.
+##   Future Improvements
+- Backend integration for persistent cart and user authentication
+- Advanced checkout workflow with form validation
+- Payment gateway simulation
+
 
 ---
 
